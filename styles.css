@@ -1,0 +1,338 @@
+/* ============================================================
+   mustafa.design — Coming Soon
+   Dark editorial: cursor-driven image trail, outlined kinetic
+   marquee. Single page, no scroll.
+   ============================================================ */
+
+:root {
+  --bg:       #202020;
+  --fg:       #ededed;
+  --line:     #767676;
+}
+
+* { box-sizing: border-box; }
+
+html { height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--fg);
+  background-color: var(--bg);
+  font-family: 'Clash Display', sans-serif;
+  font-size: 1vw;          /* everything scales with viewport */
+  line-height: 100%;
+  overflow: hidden;        /* single page — no scroll */
+}
+
+img { max-width: 100%; vertical-align: middle; display: inline-block; }
+
+/* ---------- Section: exactly one viewport, no scroll ---------- */
+.section {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.wrapper {
+  height: 100%;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  position: relative;
+}
+
+/* ---------- Background grid lines ---------- */
+.bg-lines {
+  z-index: 0;
+  opacity: .1;
+  background-image: url("assets/bg-lines.svg");
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
+
+/* ---------- Logo ---------- */
+.logo {
+  z-index: 10;
+  color: var(--fg);
+  font-weight: 600;
+  letter-spacing: .02em;
+  font-size: 1.6rem;
+  line-height: 1;
+  margin-top: 2rem;
+  display: flex;
+  position: relative;
+  user-select: none;
+}
+.logo__sep { color: var(--line); }
+
+/* ---------- Content wrapper ---------- */
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: 0%;
+  right: 0%;
+  isolation: isolate;
+}
+
+/* ---------- Centered content (heading + trail images) ---------- */
+.content {
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: 0%;
+  right: 0%;
+}
+
+.h-coming-soon {
+  z-index: 1000;
+  text-align: center;
+  letter-spacing: 2.5rem;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  font-weight: 400;
+  margin: 0;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.h-coming-soon.mobile { z-index: 9; }
+
+/* ---------- Main centered image ---------- */
+.main-img {
+  z-index: 4;
+  height: 30rem;
+  margin: auto;
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
+
+/* ---------- Cursor trail images (behind the heading, above bg) ---------- */
+.content__img {
+  z-index: 4;
+  height: 30rem;
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: 0%;
+  right: auto;
+  opacity: 0;
+  /* Match the reference exactly: promote for transform only. Adding
+     will-change: opacity here forces an extra compositor layer per image,
+     which makes the trail feel heavier and choppier on many GPUs. */
+  will-change: transform;
+}
+
+/* ---------- Mobile content (used < 991px) ---------- */
+.mobile-content { display: none; }
+
+/* ---------- Outlined kinetic marquee ---------- */
+.marquee {
+  z-index: 20;
+  width: 100%;
+  flex: none;
+  display: flex;
+  position: relative;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(237,237,237,.12);
+  overflow: hidden;
+}
+
+.track {
+  flex: none;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.marquee-text {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 11vw, 11rem);
+  line-height: 1;
+  letter-spacing: .02em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(237,237,237,.85);
+  padding: 0 2.5rem;
+  user-select: none;
+}
+
+.marquee-sep {
+  color: var(--line);
+  font-size: clamp(2rem, 4vw, 4rem);
+  -webkit-text-stroke: 1px var(--line);
+}
+
+/* ---------- Loader reveal ---------- */
+.reveal {
+  z-index: 10;
+  background-color: var(--bg);
+  position: absolute;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+}
+
+/* ---------- Bottom block: social strip + marquee ---------- */
+.bottom {
+  z-index: 20;
+  width: 100%;
+  flex: none;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Social links strip ---------- */
+.social {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 3.5rem);
+  padding-bottom: 1.25rem;
+  pointer-events: none;
+}
+
+.social__link {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--fg);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.85rem, 1.05vw, 1.05rem);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .85;
+  transition: opacity .35s ease;
+  position: relative;
+}
+
+.social__label {
+  position: relative;
+  padding-bottom: .2em;
+}
+.social__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .45s cubic-bezier(.16,1,.3,1);
+}
+
+.social__arrow {
+  font-size: .78em;
+  opacity: 0;
+  transform: translate(-0.3em, 0.3em);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.16,1,.3,1);
+  color: var(--fg);
+}
+
+.social__link:hover { opacity: 1; }
+.social__link:hover .social__label::after { transform: scaleX(1); transform-origin: left; }
+.social__link:hover .social__arrow { opacity: .9; transform: translate(0, 0); }
+
+/* ============================================================
+   Responsive breakpoints
+   ============================================================ */
+
+/* < 991px — swap to mobile stack (hide desktop trail) */
+@media screen and (max-width: 991px) {
+  .section { max-height: 100dvh; }
+
+  .content,
+  .content__img,
+  .main-img {
+    display: none;
+  }
+
+  body { font-size: 16px; overflow: hidden; }
+
+  .mobile-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+    z-index: 2;
+  }
+
+  .img-mobile {
+    width: min(68%, 22rem);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+  }
+
+  .h-coming-soon.mobile {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: 1.2rem;
+    font-size: 2rem;
+  }
+
+  /* stagger the overlapping mobile images into a fan */
+  .img-mobile:nth-child(2) { transform: translate(-50%, -68%) rotate(-6deg); z-index: 1; }
+  .img-mobile:nth-child(3) { transform: translate(-52%, -48%) rotate(-2deg); }
+  .img-mobile:nth-child(4) { transform: translate(-48%, -38%) rotate(4deg); }
+  .img-mobile:nth-child(5) { transform: translate(-54%, -30%) rotate(-4deg); }
+  .img-mobile:nth-child(6) { transform: translate(-46%, -22%) rotate(3deg); }
+  .img-mobile:nth-child(7) { transform: translate(-50%, -14%) rotate(0deg); }
+
+  .logo { font-size: 1.35rem; letter-spacing: .02em; }
+  .social { padding: 0 1.5rem; padding-bottom: 1rem; }
+  .social__link { font-size: 0.78rem; letter-spacing: .16em; }
+  .marquee-text { font-size: 4.5rem; padding: 0 1.5rem; }
+}
+
+/* < 480px */
+@media screen and (max-width: 479px) {
+  .img-mobile { width: 82%; }
+  .h-coming-soon.mobile { letter-spacing: .9rem; font-size: 1.7rem; margin-left: .9rem; }
+  .marquee-text { font-size: 3.6rem; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .content__img { opacity: 0; }
+}

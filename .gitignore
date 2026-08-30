@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+
+# Editors
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dropbox sync metadata
+Icon?
+.DocumentRevisions-V100
