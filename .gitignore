@@ -9,6 +9,9 @@
 # Logs
 *.log
 
+# Local-only dev tool (kept out of the repo / live site)
+ship
+
 # Dropbox sync metadata
 Icon?
 .DocumentRevisions-V100
