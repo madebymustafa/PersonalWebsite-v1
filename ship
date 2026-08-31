@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# =============================================================================
+#  ship — push local commits to GitHub to go live for mustafa.design
+#
+#  IMPORTANT: pushing to GitHub auto-deploys to Vercel (the live site).
+#  This script exists to make "going live" a deliberate, explicit step:
+#  it will NOT push anything until you confirm.
+#
+#  Workflow:
+#   - Do all your work and commit locally (git commit) — this NEVER goes live.
+#   - When you're 100% sure, run `./ship` — it shows what will deploy, asks
+#     you to confirm, then does the single push.
+# =============================================================================
+
+set -euo pipefail
+cd "$(dirname "$0")"
+
+BRANCH="$(git branch --show-current)"
+REMOTE="origin"
+
+# 1) Make sure nothing is half-saved locally before we ship.
+if [ -n "$(git status --porcelain)" ]; then
+  echo "✋ You have uncommitted changes. Commit them first (git add + git commit) —"
+  echo "   or stash them. ship will not run with a dirty working tree."
+  git status --short
+  exit 1
+fi
+
+# 2) What will go live?
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  About to make your site go LIVE by pushing to GitHub"
+echo "  Branch:  $BRANCH"
+echo "  Remote:  $REMOTE"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+echo "Commits that will deploy:"
+git log --oneline --not "${REMOTE}/${BRANCH}" 2>/dev/null || \
+  { echo "  (none found — nothing new to push)"; exit 0; }
+echo ""
+echo "Files changed vs the live version:"
+git diff --stat "${REMOTE}/${BRANCH}"..HEAD 2>/dev/null || true
+echo ""
+echo "⚠️  This triggers an automatic Vercel deployment of the LIVE site."
+echo -n "Type 'ship' to confirm and push: "
+read -r confirm
+if [ "$confirm" != "ship" ]; then
+  echo "Aborted — nothing was pushed."
+  exit 0
+fi
+
+# 3) Do it.
+git push "$REMOTE" "$BRANCH"
+echo ""
+echo "🚀 Pushed. Vercel will now deploy $BRANCH to mustafa.design."
+echo "   (Give it a minute, then check the deployment.)"
