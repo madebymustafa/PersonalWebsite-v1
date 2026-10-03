@@ -78,6 +78,82 @@ img { max-width: 100%; vertical-align: middle; display: inline-block; }
 }
 .logo__sep { color: var(--line); }
 
+/* ---------- Toptal credential ----------
+   Centred on the first horizontal grid rule, which runs directly behind it.
+   The rule moves with the cover-fitted grid, so the badge is anchored to it
+   using the same scale the heading drifts with. */
+.toptal {
+  --grid: max(100vw / 1440, 100vh / 1024);
+  --rule-1: calc(249.5 * var(--grid) + (100vh - 1024 * var(--grid)) / 2);
+  z-index: 10;
+  color: var(--fg);
+  position: absolute;
+  top: var(--rule-1);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem 1rem;
+  border: 1px solid rgb(237 237 237 / .2);
+  border-radius: 999px;
+  white-space: nowrap;
+  user-select: none;
+  /* The backdrop keeps the main image from bleeding through the pill on
+     short viewports. The gradient repaints the grid rule at the same
+     #767676-at-10% blend .bg-lines uses, so the line still reads as one
+     continuous rule passing behind the pill. */
+  background:
+    linear-gradient(rgb(118 118 118 / .1), rgb(118 118 118 / .1)) center / 100% 1px no-repeat,
+    rgb(32 32 32 / .92);
+}
+.toptal__dot {
+  position: relative;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: #34d399;          /* emerald, as the reference availability dot */
+  flex: none;
+}
+.toptal__dot::before {          /* the ping halo */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  opacity: .75;
+  animation: toptal-ping 1s cubic-bezier(0, 0, .2, 1) infinite;
+}
+@keyframes toptal-ping {
+  75%, to { opacity: 0; transform: scale(2); }
+}
+.toptal__text {
+  font-size: .6875rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  opacity: .8;
+}
+.toptal__logo {
+  height: .75rem;
+  width: auto;
+  flex: none;
+  opacity: .9;
+}
+.toptal__link {
+  color: inherit;          /* else the UA default paints it link-blue */
+  font-size: .6875rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  text-decoration: underline;
+  text-underline-offset: .25rem;
+  opacity: .7;
+  transition: opacity .3s;
+}
+.toptal__link:hover,
+.toptal__link:focus-visible { opacity: 1; }
+
 /* ---------- Content wrapper ---------- */
 .content-wrapper {
   width: 100%;
@@ -335,9 +411,12 @@ img { max-width: 100%; vertical-align: middle; display: inline-block; }
   .img-mobile { width: 82%; }
   .h-coming-soon.mobile { letter-spacing: .9rem; font-size: 1.7rem; margin-left: .9rem; }
   .marquee-text { font-size: 3.6rem; }
+  /* the pill only clears 390px without the profile link */
+  .toptal__link { display: none; }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .content__img { opacity: 0; }
+  .toptal__dot::before { animation: none; }
 }
