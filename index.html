@@ -13,8 +13,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16-light.png" media="(prefers-color-scheme: light)" />
   <link rel="apple-touch-icon" sizes="192x192" href="assets/apple-touch-icon.png" />
 
-  <!-- Clash Display (display typeface via Fontshare CDN) -->
-  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet" />
+  <!-- Clash Display, served from this repo. Preloaded so the faces are ready
+       before first paint, which is what lets font-display: optional keep
+       Clash Display without ever swapping to it. -->
+  <link rel="preload" href="assets/fonts/ClashDisplay-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/ClashDisplay-600.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/ClashDisplay-700.woff2" as="font" type="font/woff2" crossorigin />
 
   <link rel="stylesheet" href="styles.css" />
 </head>

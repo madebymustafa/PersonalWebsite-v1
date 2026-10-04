@@ -10,6 +10,48 @@
   --line:     #767676;
 }
 
+/* ---------- Clash Display, served from this repo ----------
+   Clash Display is by Indian Type Foundry, free via Fontshare.
+
+   These used to come from the Fontshare CDN, which hardcodes
+   font-display: swap and ignores the display= parameter. That guarantees
+   a fallback-to-Clash swap on every load, and because every element here
+   is centred, the swap read as the whole page sliding sideways before it
+   settled: the heading alone changed width by 37px.
+
+   font-display: optional never swaps. If a face is not ready within the
+   ~100ms block period the fallback is used for that page view and left
+   alone, so the layout is stable from the first frame. The files are local
+   and preloaded, so they are ready inside that window in practice. */
+@font-face {
+  font-family: 'Clash Display';
+  src: url('assets/fonts/ClashDisplay-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: optional;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('assets/fonts/ClashDisplay-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: optional;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('assets/fonts/ClashDisplay-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: optional;
+}
+@font-face {
+  font-family: 'Clash Display';
+  src: url('assets/fonts/ClashDisplay-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: optional;
+}
+
 * { box-sizing: border-box; }
 
 html { height: 100%; }
