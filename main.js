@@ -26,9 +26,14 @@
     var trailImgs = Array.prototype.slice.call(content.querySelectorAll(".content__img"));
     var images = main ? [main].concat(trailImgs) : trailImgs;
 
-    // On touch / reduced motion there is no cursor to trail, so the images
-    // never appear at all. .main-img is opacity 0 in CSS for the same reason.
-    if (prefersReduced || !finePointer) return;
+    if (prefersReduced || !finePointer) {
+      // There is no cursor to trail. A still image is not motion, so a coarse
+      // pointer gets one back: phones already have their own below 991px, which
+      // leaves tablets in landscape as the only viewport that needs this. A fine
+      // pointer that asked for reduced motion keeps the empty middle.
+      if (!finePointer && main) gsap.set(main, { opacity: 1, x: 0, y: 0, scale: 1 });
+      return;
+    }
 
     var MathUtils = {
       lerp: function (a, b, n) { return (1 - n) * a + n * b; },
