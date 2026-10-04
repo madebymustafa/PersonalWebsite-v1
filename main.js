@@ -20,14 +20,14 @@
     var content = document.querySelector(".content");
     if (!content) return;
 
-    // The centred main image is part of the trail cluster: it sits still behind
-    // the heading at load, then becomes interactive once the trail activates.
+    // The main image heads the trail cluster: it stays hidden until the cursor
+    // moves, then fades in as the first image in the rotation.
     var main = document.querySelector(".main-img");
     var trailImgs = Array.prototype.slice.call(content.querySelectorAll(".content__img"));
     var images = main ? [main].concat(trailImgs) : trailImgs;
 
-    // On touch / reduced motion the trail is pointless — hide it and show the
-    // main centred image instead (the graceful fallback for those devices).
+    // On touch / reduced motion there is no cursor to trail, so the images
+    // never appear at all. .main-img is opacity 0 in CSS for the same reason.
     if (prefersReduced || !finePointer) return;
 
     var MathUtils = {
@@ -44,7 +44,7 @@
 
     var mousePos = { x: innerWidth / 2, y: innerHeight / 3 };
     // Start last/cache at the same spot as the cursor so nothing fires at load —
-    // the centered main image stays still until genuine mouse movement.
+    // the trail stays dormant until genuine mouse movement.
     var lastMousePos = { x: mousePos.x, y: mousePos.y };
     var cacheMousePos = { x: mousePos.x, y: mousePos.y };
 
@@ -56,7 +56,6 @@
 
     function Image(el) {
       this.DOM = { el: el };
-      this.isMain = el.classList.contains("main-img");
       this.defaultStyle = { scale: 1, x: 0, y: 0, opacity: 0 };
       this.getRect();
       this.initEvents();
@@ -65,14 +64,6 @@
       window.addEventListener("resize", this.resize.bind(this));
     };
     Image.prototype.resize = function () {
-      // The main image keeps its centered/visible state on resize (it's shown at
-      // load and never hidden by the trail logic). Occupy it towards the end of
-      // rotation so it isn't the first frame to depart the center.
-      if (this.isMain) {
-        gsap.set(this.DOM.el, { x: 0, y: 0, scale: 1 });
-        this.getRect();
-        return;
-      }
       gsap.set(this.DOM.el, this.defaultStyle);
       this.getRect();
     };

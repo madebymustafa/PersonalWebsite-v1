@@ -212,6 +212,10 @@ img { max-width: 100%; vertical-align: middle; display: inline-block; }
   bottom: 0%;
   left: 0%;
   right: 0%;
+  /* Starts hidden like the rest of the trail. Without this it paints at full
+     opacity on the first frame, showing behind the heading before the cursor
+     has moved. main.js fades it in when it takes its turn in the rotation. */
+  opacity: 0;
 }
 
 /* ---------- Cursor trail images (behind the heading, above bg) ---------- */
