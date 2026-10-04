@@ -455,7 +455,10 @@ img { max-width: 100%; vertical-align: middle; display: inline-block; }
 /* < 480px */
 @media screen and (max-width: 479px) {
   .img-mobile { width: 82%; }
-  .h-coming-soon.mobile { letter-spacing: .9rem; font-size: 1.7rem; margin-left: .9rem; }
+  /* margin-left cancels the gap the trailing letter-spacing leaves after the
+     last glyph, which is what puts the ink off centre. At the .9rem it used to
+     be, the ink sat 6.5px right of the middle at every width in this query. */
+  .h-coming-soon.mobile { letter-spacing: .9rem; font-size: 1.7rem; margin-left: .5rem; }
   .marquee-text { font-size: 3.6rem; }
   /* the pill only clears 390px without the profile link */
   .toptal__link { display: none; }
@@ -463,6 +466,17 @@ img { max-width: 100%; vertical-align: middle; display: inline-block; }
      down to 5px of margin on a 320px screen. The tracking is the only part
      worth giving up: .2em is 2.2px a glyph across 30 of them. */
   .toptal__text { letter-spacing: .12em; }
+}
+
+/* Narrower still. The wordmark box is as wide as its tracking makes it, so it
+   has to surrender some of that before it fits, and the pill drops the
+   logomark rather than run off both edges. */
+@media screen and (max-width: 339px) {
+  .h-coming-soon.mobile { letter-spacing: .6rem; margin-left: .35rem; }
+}
+@media screen and (max-width: 299px) {
+  .h-coming-soon.mobile { letter-spacing: .45rem; margin-left: .275rem; }
+  .toptal__logo { display: none; }
 }
 
 /* ---------- Reduced motion ---------- */
